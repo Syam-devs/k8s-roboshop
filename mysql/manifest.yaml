@@ -1,0 +1,62 @@
+apiVersion: v1 
+kind: Secret
+metadata: 
+  name: mysql
+  labels: 
+    project: roboshop
+    component: mysql
+    tier: database
+type: Opaque
+data: 
+  MYSQL_ROOT_PASSWORD: "Um9ib1Nob3BAMQ=="
+
+---
+apiversion: v1
+kind: Deployment
+metadata: 
+  name: mysql
+  namespace: roboshop
+  labels:
+    project: roboshop
+    component: mysql
+    tier: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: roboshop
+      component: mysql
+      tier: database
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        component: mysql
+        tier: database
+    spec:
+      containers:
+      - name: mysql
+        image: syamops/mysql:v1
+        envFrom:
+        - SecretRef:
+            name: mysql
+
+---
+apiVersion: v1 
+kind: Service
+metadata: 
+  name: mysql
+  namespace: roboshop
+  labels: 
+    project: roboshop
+    component: mysql
+    tier: database
+spec: 
+  selector:
+    project: roboshop
+    component: mysql
+    tier: database
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetport: 3306
