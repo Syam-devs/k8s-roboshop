@@ -12,7 +12,7 @@ data:
   MONGO_URL: "mongodb://mongodb:27017/catalogue"
 
 ---
-apiversion: v1
+apiversion: apps/v1
 kind: Deployment
 metadata: 
   name: catalogue
@@ -60,4 +60,4 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetport: 8080
+    targetPort: 8080
